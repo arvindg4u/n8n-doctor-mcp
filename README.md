@@ -1,3 +1,12 @@
+---
+title: n8n Doctor MCP
+emoji: 🏥
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+---
+
 # n8n Doctor MCP Server 🏥
 
 MCP Server for n8n workflow diagnostics running 24/7 on Hugging Face Spaces.
