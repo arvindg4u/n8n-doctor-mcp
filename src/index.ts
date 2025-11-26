@@ -109,16 +109,36 @@ app.get('/', (req, res) => {
     version: '1.0.0',
     status: 'running',
     transport: 'HTTP + SSE',
-    endpoint: '/mcp',
+    endpoints: {
+      mcp: '/mcp',
+      sse: '/sse'
+    },
     timestamp: new Date().toISOString()
   });
 });
 
-// MCP endpoint
+// MCP POST endpoint
 app.post('/mcp', async (req, res) => {
   const transport = new StreamableHTTPServerTransport({
     sessionIdGenerator: undefined,
     enableJsonResponse: true
+  });
+  
+  res.on('close', () => transport.close());
+  await server.connect(transport);
+  await transport.handleRequest(req, res, req.body);
+});
+
+// SSE endpoint for mcp-remote
+app.get('/sse', async (req, res) => {
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  
+  const transport = new StreamableHTTPServerTransport({
+    sessionIdGenerator: undefined,
+    enableJsonResponse: false
   });
   
   res.on('close', () => transport.close());
@@ -131,5 +151,6 @@ const port = parseInt(process.env.PORT || '7860');
 app.listen(port, () => {
   console.log(`🚀 n8n-doctor MCP server running on port ${port}`);
   console.log(`📡 MCP endpoint: http://localhost:${port}/mcp`);
+  console.log(`📡 SSE endpoint: http://localhost:${port}/sse`);
   console.log(`🏥 Health check: http://localhost:${port}/`);
 });
