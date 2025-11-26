@@ -81,6 +81,22 @@ async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
   console.error('n8n-doctor MCP server running on stdio');
+  
+  // Keep process alive - stdin se continuously read karo
+  process.stdin.resume();
+  
+  // Graceful shutdown handlers
+  process.on('SIGINT', async () => {
+    console.error('Shutting down...');
+    await server.close();
+    process.exit(0);
+  });
+  
+  process.on('SIGTERM', async () => {
+    console.error('Shutting down...');
+    await server.close();
+    process.exit(0);
+  });
 }
 
 main().catch(console.error);
