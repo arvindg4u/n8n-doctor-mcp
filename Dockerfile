@@ -10,7 +10,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
+RUN npm run build && npm prune --production
 
 EXPOSE 7860
 CMD ["node", "dist/index.js"]
