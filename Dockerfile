@@ -1,13 +1,12 @@
-FROM oven/bun:1
+FROM node:20-slim
 
 WORKDIR /app
 
 # Copy package files
-COPY package.json ./
-COPY bun.lockb* ./
+COPY package*.json ./
 
 # Install dependencies
-RUN bun install --frozen-lockfile
+RUN npm install
 
 # Copy source code
 COPY . .
@@ -16,4 +15,4 @@ COPY . .
 EXPOSE 7860
 
 # Start server
-CMD ["bun", "run", "src/index.ts"]
+CMD ["npx", "tsx", "src/index.ts"]
