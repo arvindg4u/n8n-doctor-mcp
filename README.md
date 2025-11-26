@@ -6,6 +6,7 @@ MCP Server for n8n workflow diagnostics running 24/7 on Hugging Face Spaces.
 - ✅ Workflow scanning
 - ✅ Error detection
 - ✅ 24/7 cloud hosting
+- ✅ Auto-deploy via GitHub Actions
 
 ## Deploy to HF Spaces
 1. Create Space on Hugging Face
@@ -15,3 +16,4 @@ MCP Server for n8n workflow diagnostics running 24/7 on Hugging Face Spaces.
 ## Links
 - GitHub: https://github.com/arvindg4u/n8n-doctor-mcp
 - n8n: https://arvindkumar888-n8n-automation.hf.space
+- HF Space: https://huggingface.co/spaces/arvindkumar888/n8n-doctor-mcp
