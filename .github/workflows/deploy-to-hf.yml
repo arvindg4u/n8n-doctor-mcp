@@ -1,0 +1,37 @@
+name: Deploy to Hugging Face Space
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Push to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USERNAME: ${{ secrets.HF_USERNAME }}
+          HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
+        run: |
+          # Git config setup
+          git config --global user.email "rvndkaswan@gmail.com"
+          git config --global user.name "Arvind Kumar"
+          
+          # HF Space ka remote URL
+          HF_REPO="https://${HF_USERNAME}:${HF_TOKEN}@huggingface.co/spaces/${HF_USERNAME}/${HF_SPACE_NAME}"
+          
+          # Remote add karein aur push karein
+          git remote add hf ${HF_REPO} || git remote set-url hf ${HF_REPO}
+          git push hf main --force
+          
+          echo "✅ Successfully deployed to Hugging Face Space: ${HF_USERNAME}/${HF_SPACE_NAME}"
